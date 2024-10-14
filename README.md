@@ -1,1 +1,1 @@
-# lecture-testing-task
+# Читать README в 05_hw
