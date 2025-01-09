@@ -12,11 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # Устанавливаем необходимые зависимости
       - name: Install dependencies
         run: sudo apt-get install -y lcov
 
-      # Запускаем cmake, указывая исходники в 05_hw
       - name: Configure CMake
         run: cmake -S 05_hw -B build -DENABLE_SANITIZERS=ON -DENABLE_COVERAGE=ON
 
@@ -28,15 +26,3 @@ jobs:
           cd build
           ctest --verbose
 
-        - name: Coverage Report
-        run: |
-          lcov --capture --directory build --output-file coverage.info
-          lcov --remove coverage.info '/usr/*' --output-file coverage.info || true
-          genhtml coverage.info --output-directory coverage
-        
-
-      - name: Upload Coverage Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage-report
-          path: build/coverage
