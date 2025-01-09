@@ -1,28 +1,27 @@
 cmake_minimum_required(VERSION 3.10)
 project(stack LANGUAGES C)
 
-# Библиотека со стеком
+# Добавляем библиотеку для стека
 add_library(stack stack.c stack.h)
 
-# Основной исполняемый файл (демонстрация)
+# Основной исполняемый файл
 add_executable(main main.c)
-target_link_libraries(main stack)
+target_link_libraries(main PRIVATE stack)
 
 # Включение тестов
 enable_testing()
 
-# Исполняемый файл с тестами
+# Исполняемый файл для тестов
 add_executable(tests test.c)
-target_link_libraries(tests stack)
+target_link_libraries(tests PRIVATE stack)
 
-# Создаем тесты (один общий для всех методов)
-add_test(NAME StackMethodsTest COMMAND tests)
+add_test(NAME StackTests COMMAND tests)
 
 # Бенчмарки
 add_executable(benchmarks benchmark_stack.c)
-target_link_libraries(benchmarks stack)
+target_link_libraries(benchmarks PRIVATE stack)
 
-# Опция для покрытия кода
+# Проверка покрытия кода
 option(ENABLE_COVERAGE "Enable coverage reporting" ON)
 if(ENABLE_COVERAGE AND CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(stack PUBLIC --coverage)

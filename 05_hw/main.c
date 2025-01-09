@@ -21,7 +21,8 @@ int main() {
     Node* searchResult = searchByValue(&stack, 20);
     if (searchResult != NULL) {
         printf("Element with value 20 found.\n");
-    } else {
+    }
+    else {
         printf("Element with value 20 not found.\n");
     }
 
@@ -30,7 +31,6 @@ int main() {
         printf("Top element: %d\n", topElement->data);
     }
 
+    destroyStack(&stack);
     return 0;
 }
-
-
