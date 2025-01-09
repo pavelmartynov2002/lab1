@@ -1,0 +1,33 @@
+name: C CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install dependencies
+      run: sudo apt-get install -y lcov
+    - name: Configure CMake
+      run: cmake -S . -B build -DENABLE_SANITIZERS=ON -DENABLE_COVERAGE=ON
+    - name: Build
+      run: cmake --build build
+    - name: Run Tests
+      run: cd build && ctest
+    - name: Coverage Report
+      run: |
+        lcov --capture --directory build --output-file coverage.info
+        lcov --remove coverage.info '/usr/*' --output-file coverage.info
+        genhtml coverage.info --output-directory coverage
+    - name: Upload Coverage Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: build/coverage
