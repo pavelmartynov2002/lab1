@@ -28,11 +28,12 @@ jobs:
           cd build
           ctest --verbose
 
-      - name: Coverage Report
+        - name: Coverage Report
         run: |
           lcov --capture --directory build --output-file coverage.info
-          lcov --remove coverage.info '/usr/*' --output-file coverage.info
+          lcov --remove coverage.info '/usr/*' --output-file coverage.info || true
           genhtml coverage.info --output-directory coverage
+        
 
       - name: Upload Coverage Report
         uses: actions/upload-artifact@v3
